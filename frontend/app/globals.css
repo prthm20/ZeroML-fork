@@ -1,0 +1,231 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* --------------------------------------------------------
+   ML Workflow Platform Design System - Dark Theme
+   -------------------------------------------------------- */
+@layer base {
+  :root {
+    /* Core ML Platform Colors */
+    --background: 220 27% 8%;
+    --foreground: 220 15% 95%;
+
+    --card: 220 20% 12%;
+    --card-foreground: 220 15% 95%;
+
+    --popover: 220 20% 12%;
+    --popover-foreground: 220 15% 95%;
+
+    /* Primary - ML Blue */
+    --primary: 217 91% 60%;
+    --primary-foreground: 220 27% 8%;
+    --primary-glow: 217 91% 70%;
+
+    /* Secondary - Deep Purple */
+    --secondary: 260 30% 20%;
+    --secondary-foreground: 220 15% 95%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 70%;
+
+    /* Accent - Vibrant Purple */
+    --accent: 270 100% 70%;
+    --accent-foreground: 220 27% 8%;
+
+    /* Success / Warning / Destructive */
+    --success: 142 76% 36%;
+    --success-foreground: 220 15% 95%;
+
+    --warning: 32 95% 44%;
+    --warning-foreground: 220 27% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 15% 95%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 18%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* ML Platform Specific */
+    --node-bg: 220 20% 15%;
+    --node-border: 220 15% 25%;
+    --connection-line: 217 91% 60%;
+    --canvas-bg: 220 25% 10%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(270 100% 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 20% 12%), hsl(220 15% 18%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(120 100% 25%));
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px hsl(220 25% 5% / 0.3);
+    --shadow-md: 0 8px 24px hsl(220 25% 5% / 0.4);
+    --shadow-lg: 0 16px 40px hsl(220 25% 5% / 0.5);
+    --shadow-glow: 0 0 32px hsl(217 91% 60% / 0.3);
+
+    /* Sidebar */
+    --sidebar-background: 220 25% 10%;
+    --sidebar-foreground: 220 15% 95%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 220 27% 8%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 220 15% 95%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 217 91% 60%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* --------------------------------------------------------
+   Tailwind v4 Theme Tokens
+   -------------------------------------------------------- */
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
+  /* ML platform specific */
+  --color-primary-glow: hsl(var(--primary-glow));
+  --color-node-bg: hsl(var(--node-bg));
+  --color-node-border: hsl(var(--node-border));
+  --color-connection-line: hsl(var(--connection-line));
+  --color-canvas-bg: hsl(var(--canvas-bg));
+
+  /* radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+
+  /* shadows */
+  --shadow-glow: var(--shadow-glow);
+  --shadow-custom-sm: var(--shadow-sm);
+  --shadow-custom-md: var(--shadow-md);
+  --shadow-custom-lg: var(--shadow-lg);
+
+  /* gradients */
+  --background-gradient-primary: var(--gradient-primary);
+  --background-gradient-secondary: var(--gradient-secondary);
+  --background-gradient-success: var(--gradient-success);
+}
+
+/* --------------------------------------------------------
+   Misc styles (logo, card, docs, etc.)
+   -------------------------------------------------------- */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card { padding: 2em; }
+.read-the-docs { color: #888; }
