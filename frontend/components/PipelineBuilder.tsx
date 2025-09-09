@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'; // remove useEffect
+import React, { useState, useRef, useCallback } from "react"; // remove useEffect
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,12 +15,12 @@ import {
   Settings,
   ZoomIn,
   ZoomOut,
-  RotateCcw
+  RotateCcw,
 } from "lucide-react";
-
+import { DataSourceUpload } from "./DataSourceUpload";
 interface Node {
   id: string;
-  type: 'data' | 'preprocessing' | 'model' | 'evaluation';
+  type: "data" | "preprocessing" | "model" | "evaluation";
   label: string;
   position: { x: number; y: number };
 }
@@ -31,22 +31,57 @@ interface Connection {
 }
 
 const nodeTypes = [
-  { type: 'data', label: 'Data Source', icon: Database, color: 'bg-blue-500/20 border-blue-500/50' },
-  { type: 'preprocessing', label: 'Preprocessing', icon: Filter, color: 'bg-green-500/20 border-green-500/50' },
-  { type: 'model', label: 'Model Training', icon: Cpu, color: 'bg-purple-500/20 border-purple-500/50' },
-  { type: 'evaluation', label: 'Evaluation', icon: Activity, color: 'bg-orange-500/20 border-orange-500/50' }
+  {
+    type: "data",
+    label: "Data Source",
+    icon: Database,
+    color: "bg-blue-500/20 border-blue-500/50",
+  },
+  {
+    type: "preprocessing",
+    label: "Preprocessing",
+    icon: Filter,
+    color: "bg-green-500/20 border-green-500/50",
+  },
+  {
+    type: "model",
+    label: "Model Training",
+    icon: Cpu,
+    color: "bg-purple-500/20 border-purple-500/50",
+  },
+  {
+    type: "evaluation",
+    label: "Evaluation",
+    icon: Activity,
+    color: "bg-orange-500/20 border-orange-500/50",
+  },
 ];
 
 export const PipelineBuilder = () => {
   const [nodes, setNodes] = useState<Node[]>([
-    { id: '1', type: 'data', label: 'CSV Dataset', position: { x: 100, y: 100 } },
-    { id: '2', type: 'preprocessing', label: 'Data Cleaning', position: { x: 350, y: 100 } },
-    { id: '3', type: 'model', label: 'Random Forest', position: { x: 600, y: 100 } }
+    {
+      id: "1",
+      type: "data",
+      label: "CSV Dataset",
+      position: { x: 100, y: 100 },
+    },
+    {
+      id: "2",
+      type: "preprocessing",
+      label: "Data Cleaning",
+      position: { x: 350, y: 100 },
+    },
+    {
+      id: "3",
+      type: "model",
+      label: "Random Forest",
+      position: { x: 600, y: 100 },
+    },
   ]);
 
   const [connections, setConnections] = useState<Connection[]>([
-    { from: '1', to: '2' },
-    { from: '2', to: '3' }
+    { from: "1", to: "2" },
+    { from: "2", to: "3" },
   ]);
 
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
@@ -56,45 +91,54 @@ export const PipelineBuilder = () => {
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectionStart, setConnectionStart] = useState<string | null>(null);
-  const [tempConnection, setTempConnection] = useState<{ x: number; y: number } | null>(null);
+  const [tempConnection, setTempConnection] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [isRunning, setIsRunning] = useState(false);
-  const [executionProgress, setExecutionProgress] = useState<Record<string, 'running' | 'completed'>>({});
+  const [executionProgress, setExecutionProgress] = useState<
+    Record<string, "running" | "completed">
+  >({});
   const [isPanning, setIsPanning] = useState(false);
-  const [panStart, setPanStart] = useState<{ x: number; y: number } | null>(null);
+  const [panStart, setPanStart] = useState<{ x: number; y: number } | null>(
+    null
+  );
 
   const canvasRef = useRef<HTMLDivElement>(null);
 
   /** --- Node & Pipeline Operations --- */
-  const addNode = (type: Node['type']) => {
+  const addNode = (type: Node["type"]) => {
     const newNode: Node = {
       id: Date.now().toString(),
       type,
-      label: nodeTypes.find(nt => nt.type === type)?.label || 'New Node',
-      position: { x: 200, y: 200 }
+      label: nodeTypes.find((nt) => nt.type === type)?.label || "New Node",
+      position: { x: 200, y: 200 },
     };
     setNodes([...nodes, newNode]);
   };
 
   const deleteNode = (nodeId: string) => {
-    setNodes(nodes.filter(n => n.id !== nodeId));
-    setConnections(connections.filter(c => c.from !== nodeId && c.to !== nodeId));
+    setNodes(nodes.filter((n) => n.id !== nodeId));
+    setConnections(
+      connections.filter((c) => c.from !== nodeId && c.to !== nodeId)
+    );
   };
 
   const runPipeline = async () => {
     if (nodes.length === 0) return;
     setIsRunning(true);
     setExecutionProgress({});
-    
+
     const sortedNodes = [...nodes].sort((a, b) => {
-      const aConns = connections.filter(c => c.to === a.id).length;
-      const bConns = connections.filter(c => c.to === b.id).length;
+      const aConns = connections.filter((c) => c.to === a.id).length;
+      const bConns = connections.filter((c) => c.to === b.id).length;
       return aConns - bConns;
     });
 
     for (const node of sortedNodes) {
-      setExecutionProgress(prev => ({ ...prev, [node.id]: 'running' }));
-      await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
-      setExecutionProgress(prev => ({ ...prev, [node.id]: 'completed' }));
+      setExecutionProgress((prev) => ({ ...prev, [node.id]: "running" }));
+      await new Promise((r) => setTimeout(r, 1000 + Math.random() * 1000));
+      setExecutionProgress((prev) => ({ ...prev, [node.id]: "completed" }));
     }
 
     setIsRunning(false);
@@ -103,7 +147,7 @@ export const PipelineBuilder = () => {
 
   /** --- Zoom & Pan --- */
   const handleZoom = (delta: number, clientX?: number, clientY?: number) => {
-    setZoom(prev => {
+    setZoom((prev) => {
       const newZoom = Math.min(Math.max(prev + delta * 0.1, 0.2), 3); // use const
       if (clientX !== undefined && clientY !== undefined && canvasRef.current) {
         const rect = canvasRef.current.getBoundingClientRect();
@@ -111,7 +155,7 @@ export const PipelineBuilder = () => {
         const offsetY = (clientY - rect.top - panOffset.y) / prev;
         setPanOffset({
           x: panOffset.x - offsetX * (newZoom - prev),
-          y: panOffset.y - offsetY * (newZoom - prev)
+          y: panOffset.y - offsetY * (newZoom - prev),
         });
       }
       return newZoom;
@@ -122,33 +166,63 @@ export const PipelineBuilder = () => {
   const getScreenPosition = (clientX: number, clientY: number) => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return { x: 0, y: 0 };
-    return { x: (clientX - rect.left - panOffset.x) / zoom, y: (clientY - rect.top - panOffset.y) / zoom };
+    return {
+      x: (clientX - rect.left - panOffset.x) / zoom,
+      y: (clientY - rect.top - panOffset.y) / zoom,
+    };
   };
 
   /** --- Node Drag & Connect --- */
-  const handleMouseDown = useCallback((e: React.MouseEvent, nodeId: string) => {
-    if (isConnecting) return;
-    const node = nodes.find(n => n.id === nodeId);
-    if (!node) return;
-    setSelectedNode(nodeId);
-    setIsDragging(true);
-    const screenPos = getScreenPosition(e.clientX, e.clientY);
-    setDragOffset({ x: screenPos.x - node.position.x, y: screenPos.y - node.position.y });
-  }, [nodes, isConnecting, getScreenPosition]); // removed panOffset, zoom
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent, nodeId: string) => {
+      if (isConnecting) return;
+      const node = nodes.find((n) => n.id === nodeId);
+      if (!node) return;
+      setSelectedNode(nodeId);
+      setIsDragging(true);
+      const screenPos = getScreenPosition(e.clientX, e.clientY);
+      setDragOffset({
+        x: screenPos.x - node.position.x,
+        y: screenPos.y - node.position.y,
+      });
+    },
+    [nodes, isConnecting, getScreenPosition]
+  ); // removed panOffset, zoom
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (isConnecting && tempConnection) {
-      setTempConnection(getScreenPosition(e.clientX, e.clientY));
-      return;
-    }
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (isConnecting && tempConnection) {
+        setTempConnection(getScreenPosition(e.clientX, e.clientY));
+        return;
+      }
 
-    if (!isDragging || !selectedNode) return;
+      if (!isDragging || !selectedNode) return;
 
-    const screenPos = getScreenPosition(e.clientX, e.clientY);
-    setNodes(nodes.map(n =>
-      n.id === selectedNode ? { ...n, position: { x: screenPos.x - dragOffset.x, y: screenPos.y - dragOffset.y } } : n
-    ));
-  }, [isDragging, selectedNode, dragOffset, nodes, isConnecting, tempConnection, getScreenPosition]); // removed panOffset, zoom
+      const screenPos = getScreenPosition(e.clientX, e.clientY);
+      setNodes(
+        nodes.map((n) =>
+          n.id === selectedNode
+            ? {
+                ...n,
+                position: {
+                  x: screenPos.x - dragOffset.x,
+                  y: screenPos.y - dragOffset.y,
+                },
+              }
+            : n
+        )
+      );
+    },
+    [
+      isDragging,
+      selectedNode,
+      dragOffset,
+      nodes,
+      isConnecting,
+      tempConnection,
+      getScreenPosition,
+    ]
+  ); // removed panOffset, zoom
 
   const handleMouseUp = useCallback(() => {
     if (isConnecting) {
@@ -171,10 +245,13 @@ export const PipelineBuilder = () => {
   const handleConnectionEnd = (e: React.MouseEvent, nodeId: string) => {
     e.stopPropagation();
     if (isConnecting && connectionStart && connectionStart !== nodeId) {
-      const exists = connections.find(c =>
-        (c.from === connectionStart && c.to === nodeId) || (c.from === nodeId && c.to === connectionStart)
+      const exists = connections.find(
+        (c) =>
+          (c.from === connectionStart && c.to === nodeId) ||
+          (c.from === nodeId && c.to === connectionStart)
       );
-      if (!exists) setConnections([...connections, { from: connectionStart, to: nodeId }]);
+      if (!exists)
+        setConnections([...connections, { from: connectionStart, to: nodeId }]);
     }
     setIsConnecting(false);
     setConnectionStart(null);
@@ -182,8 +259,11 @@ export const PipelineBuilder = () => {
   };
 
   /** --- Helpers --- */
-  const getNodeIcon = (type: Node['type']) => nodeTypes.find(nt => nt.type === type)?.icon || Database;
-  const getNodeColor = (type: Node['type']) => nodeTypes.find(nt => nt.type === type)?.color || 'bg-gray-500/20 border-gray-500/50';
+  const getNodeIcon = (type: Node["type"]) =>
+    nodeTypes.find((nt) => nt.type === type)?.icon || Database;
+  const getNodeColor = (type: Node["type"]) =>
+    nodeTypes.find((nt) => nt.type === type)?.color ||
+    "bg-gray-500/20 border-gray-500/50";
 
   /** --- Wheel Zoom --- */
   const handleWheel = (e: React.WheelEvent) => {
@@ -196,7 +276,8 @@ export const PipelineBuilder = () => {
     // Only left mouse button
     if (e.button !== 0) return;
     // Prevent panning if starting on a node or connection point
-    if ((e.target as HTMLElement).closest('.node-card, .connection-point')) return;
+    if ((e.target as HTMLElement).closest(".node-card, .connection-point"))
+      return;
     setIsPanning(true);
     setPanStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
   };
@@ -228,16 +309,19 @@ export const PipelineBuilder = () => {
     <div className="h-full flex bg-[#10141a] text-white">
       {/* Sidebar */}
       <div className="w-80 border-r border-[#23283a] bg-[#181c27] p-6 shadow-xl">
-        <h3 className="font-semibold mb-4 text-[#e0e7ef]">Pipeline Components</h3>
+        <h3 className="font-semibold mb-4 text-[#e0e7ef]">
+          Pipeline Components
+        </h3>
         <div className="space-y-3 mb-6">
-          {nodeTypes.map(nt => (
+          {nodeTypes.map((nt) => (
             <Button
               key={nt.type}
               variant="outline"
               className="w-full justify-start gap-2 h-12 border-[#23283a] bg-[#23283a] hover:bg-[#23283a]/80 text-[#e0e7ef] transition"
-              onClick={() => addNode(nt.type as Node['type'])}
+              onClick={() => addNode(nt.type as Node["type"])}
             >
-              <nt.icon className="h-5 w-5" /> {nt.label} <Plus className="h-4 w-4 ml-auto" />
+              <nt.icon className="h-5 w-5" /> {nt.label}{" "}
+              <Plus className="h-4 w-4 ml-auto" />
             </Button>
           ))}
         </div>
@@ -245,27 +329,74 @@ export const PipelineBuilder = () => {
         <div className="border-t border-[#23283a] pt-4 mb-4">
           <h4 className="font-medium mb-3 text-[#e0e7ef]">Canvas Controls</h4>
           <div className="flex gap-2 mb-3">
-            <Button variant="outline" size="sm" className="border-[#23283a] bg-[#23283a] text-[#e0e7ef]" onClick={() => handleZoom(1)}><ZoomIn className="h-4 w-4" /></Button>
-            <Button variant="outline" size="sm" className="border-[#23283a] bg-[#23283a] text-[#e0e7ef]" onClick={() => handleZoom(-1)}><ZoomOut className="h-4 w-4" /></Button>
-            <Button variant="outline" size="sm" className="border-[#23283a] bg-[#23283a] text-[#e0e7ef]" onClick={() => { setZoom(1); setPanOffset({ x: 0, y: 0 }); }}><RotateCcw className="h-4 w-4" /></Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-[#23283a] bg-[#23283a] text-[#e0e7ef]"
+              onClick={() => handleZoom(1)}
+            >
+              <ZoomIn className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-[#23283a] bg-[#23283a] text-[#e0e7ef]"
+              onClick={() => handleZoom(-1)}
+            >
+              <ZoomOut className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-[#23283a] bg-[#23283a] text-[#e0e7ef]"
+              onClick={() => {
+                setZoom(1);
+                setPanOffset({ x: 0, y: 0 });
+              }}
+            >
+              <RotateCcw className="h-4 w-4" />
+            </Button>
           </div>
-          <div className="text-xs text-[#7a88a1]">Zoom: {Math.round(zoom * 100)}%</div>
+          <div className="text-xs text-[#7a88a1]">
+            Zoom: {Math.round(zoom * 100)}%
+          </div>
         </div>
 
         <div className="border-t border-[#23283a] pt-4">
           <h4 className="font-medium mb-3 text-[#e0e7ef]">Pipeline Actions</h4>
           <div className="space-y-2">
-            <Button variant="outline" size="sm" className="w-full gap-2 border-[#23283a] bg-[#23283a] text-[#e0e7ef]"><Save className="h-4 w-4" /> Save Pipeline</Button>
-            <Button variant="outline" size="sm" className="w-full gap-2 border-[#23283a] bg-[#23283a] text-[#e0e7ef]"><Download className="h-4 w-4" /> Export Code</Button>
-            <Button size="sm" className="w-full gap-2 bg-gradient-to-r from-[#00f6ff] to-[#3b82f6] text-[#10141a] font-bold shadow-lg" onClick={runPipeline} disabled={isRunning || nodes.length === 0}>
-              <Play className={`h-4 w-4 ${isRunning ? 'animate-spin' : ''}`} /> {isRunning ? 'Running...' : 'Run Pipeline'}
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full gap-2 border-[#23283a] bg-[#23283a] text-[#e0e7ef]"
+            >
+              <Save className="h-4 w-4" /> Save Pipeline
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full gap-2 border-[#23283a] bg-[#23283a] text-[#e0e7ef]"
+            >
+              <Download className="h-4 w-4" /> Export Code
+            </Button>
+            <Button
+              size="sm"
+              className="w-full gap-2 bg-gradient-to-r from-[#00f6ff] to-[#3b82f6] text-[#10141a] font-bold shadow-lg"
+              onClick={runPipeline}
+              disabled={isRunning || nodes.length === 0}
+            >
+              <Play className={`h-4 w-4 ${isRunning ? "animate-spin" : ""}`} />{" "}
+              {isRunning ? "Running..." : "Run Pipeline"}
             </Button>
           </div>
         </div>
       </div>
 
       {/* Canvas */}
-      <div className="flex-1 relative overflow-hidden bg-[#10141a]" onWheel={handleWheel}>
+      <div
+        className="flex-1 relative overflow-hidden bg-[#10141a]"
+        onWheel={handleWheel}
+      >
         <div
           ref={canvasRef}
           className="w-full h-full relative cursor-move select-none"
@@ -275,29 +406,39 @@ export const PipelineBuilder = () => {
           onMouseLeave={handleCanvasMouseUp}
         >
           {/* Background */}
-          <div className="absolute inset-0 pointer-events-none"
+          <div
+            className="absolute inset-0 pointer-events-none"
             style={{
               background: `radial-gradient(ellipse at 60% 40%, #23283a 0%, #10141a 100%)`,
-              zIndex: 0
+              zIndex: 0,
             }}
           />
-          <div className="absolute inset-0 opacity-20 pointer-events-none"
+          <div
+            className="absolute inset-0 opacity-20 pointer-events-none"
             style={{
               backgroundImage: `linear-gradient(rgba(0,255,255,0.07) 1px, transparent 1px),
                                 linear-gradient(90deg, rgba(0,255,255,0.07) 1px, transparent 1px)`,
               backgroundSize: `${32 * zoom}px ${32 * zoom}px`,
-              transform: `translate(${panOffset.x}px, ${panOffset.y}px)`
-            }} />
-          <div className="absolute inset-0 opacity-10 pointer-events-none"
+              transform: `translate(${panOffset.x}px, ${panOffset.y}px)`,
+            }}
+          />
+          <div
+            className="absolute inset-0 opacity-10 pointer-events-none"
             style={{
               backgroundImage: `linear-gradient(rgba(59,130,246,0.08) 1px, transparent 1px),
                                 linear-gradient(90deg, rgba(59,130,246,0.08) 1px, transparent 1px)`,
               backgroundSize: `${64 * zoom}px ${64 * zoom}px`,
-              transform: `translate(${panOffset.x}px, ${panOffset.y}px)`
-            }} />
+              transform: `translate(${panOffset.x}px, ${panOffset.y}px)`,
+            }}
+          />
 
           {/* Nodes & Connections */}
-          <div className="absolute inset-0" style={{ transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})` }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
+            }}
+          >
             <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
               <defs>
                 <marker
@@ -323,8 +464,8 @@ export const PipelineBuilder = () => {
                 </linearGradient>
               </defs>
               {connections.map((c, i) => {
-                const fromNode = nodes.find(n => n.id === c.from);
-                const toNode = nodes.find(n => n.id === c.to);
+                const fromNode = nodes.find((n) => n.id === c.from);
+                const toNode = nodes.find((n) => n.id === c.to);
                 if (!fromNode || !toNode) return null;
 
                 const fromX = fromNode.position.x + 320;
@@ -333,10 +474,13 @@ export const PipelineBuilder = () => {
                 const toY = toNode.position.y + 60;
 
                 const dx = Math.max(120, Math.abs(toX - fromX) / 1.8);
-                const c1x = fromX + dx, c1y = fromY;
-                const c2x = toX - dx, c2y = toY;
+                const c1x = fromX + dx,
+                  c1y = fromY;
+                const c2x = toX - dx,
+                  c2y = toY;
 
-                const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+                const angle =
+                  (Math.atan2(toY - fromY, toX - fromX) * 180) / Math.PI;
 
                 return (
                   <g key={i}>
@@ -368,46 +512,52 @@ export const PipelineBuilder = () => {
                   </g>
                 );
               })}
-              {isConnecting && connectionStart && tempConnection && (() => {
-                const fromNode = nodes.find(n => n.id === connectionStart);
-                if (!fromNode) return null;
-                const fromX = fromNode.position.x + 320;
-                const fromY = fromNode.position.y + 60;
-                const toX = tempConnection.x;
-                const toY = tempConnection.y;
-                const dx = Math.max(120, Math.abs(toX - fromX) / 1.8);
-                const c1x = fromX + dx, c1y = fromY;
-                const c2x = toX - dx, c2y = toY;
-                const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
-                return (
-                  <>
-                    <path
-                      d={`M ${fromX} ${fromY} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${toX} ${toY}`}
-                      stroke="#3b82f6"
-                      strokeWidth="4"
-                      strokeDasharray="10,8"
-                      fill="none"
-                      className="opacity-90"
-                      // removed filter for glow
-                    />
-                    <g
-                      transform={`translate(${toX},${toY}) rotate(${angle})`}
-                      style={{ pointerEvents: "none" }}
-                    >
-                      <polygon
-                        points="0,0 28,14 0,28"
-                        fill="#3b82f6"
-                        stroke="#fff"
-                        strokeWidth="1.5"
+              {isConnecting &&
+                connectionStart &&
+                tempConnection &&
+                (() => {
+                  const fromNode = nodes.find((n) => n.id === connectionStart);
+                  if (!fromNode) return null;
+                  const fromX = fromNode.position.x + 320;
+                  const fromY = fromNode.position.y + 60;
+                  const toX = tempConnection.x;
+                  const toY = tempConnection.y;
+                  const dx = Math.max(120, Math.abs(toX - fromX) / 1.8);
+                  const c1x = fromX + dx,
+                    c1y = fromY;
+                  const c2x = toX - dx,
+                    c2y = toY;
+                  const angle =
+                    (Math.atan2(toY - fromY, toX - fromX) * 180) / Math.PI;
+                  return (
+                    <>
+                      <path
+                        d={`M ${fromX} ${fromY} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${toX} ${toY}`}
+                        stroke="#3b82f6"
+                        strokeWidth="4"
+                        strokeDasharray="10,8"
+                        fill="none"
+                        className="opacity-90"
                         // removed filter for glow
                       />
-                    </g>
-                  </>
-                );
-              })()}
+                      <g
+                        transform={`translate(${toX},${toY}) rotate(${angle})`}
+                        style={{ pointerEvents: "none" }}
+                      >
+                        <polygon
+                          points="0,0 28,14 0,28"
+                          fill="#3b82f6"
+                          stroke="#fff"
+                          strokeWidth="1.5"
+                          // removed filter for glow
+                        />
+                      </g>
+                    </>
+                  );
+                })()}
             </svg>
 
-            {nodes.map(node => {
+            {nodes.map((node) => {
               const Icon = getNodeIcon(node.type);
               return (
                 <Card
@@ -417,25 +567,40 @@ export const PipelineBuilder = () => {
                     transition-transform duration-200
                     hover:scale-[1.04] hover:shadow-2xl
                     rounded-xl border-2
-                    ${selectedNode === node.id ? 'border-blue-400' : 'border-[#23283a]'}
-                    ${getNodeColor(node.type).replace('/20', '').replace('/50', '')} // remove opacity for solid
+                    ${
+                      selectedNode === node.id
+                        ? "border-blue-400"
+                        : "border-[#23283a]"
+                    }
+                    ${getNodeColor(node.type)
+                      .replace("/20", "")
+                      .replace("/50", "")} // remove opacity for solid
                     bg-[#181c27]
                     shadow-lg
                     backdrop-blur-md
-                    ${executionProgress[node.id] === 'running' ? 'ring-4 ring-yellow-400/80 animate-pulse' : ''}
-                    ${executionProgress[node.id] === 'completed' ? 'ring-4 ring-green-500/80' : ''}
+                    ${
+                      executionProgress[node.id] === "running"
+                        ? "ring-4 ring-yellow-400/80 animate-pulse"
+                        : ""
+                    }
+                    ${
+                      executionProgress[node.id] === "completed"
+                        ? "ring-4 ring-green-500/80"
+                        : ""
+                    }
                   `}
                   style={{
                     left: node.position.x,
                     top: node.position.y,
-                    boxShadow: selectedNode === node.id
-                      ? '0 0 0 4px #3b82f6, 0 8px 32px 0 #23283a'
-                      : '0 4px 24px 0 #23283a88',
+                    boxShadow:
+                      selectedNode === node.id
+                        ? "0 0 0 4px #3b82f6, 0 8px 32px 0 #23283a"
+                        : "0 4px 24px 0 #23283a88",
                     zIndex: selectedNode === node.id ? 10 : 1,
-                    transition: 'box-shadow 0.2s, transform 0.2s',
-                    willChange: 'transform',
+                    transition: "box-shadow 0.2s, transform 0.2s",
+                    willChange: "transform",
                   }}
-                  onMouseDown={e => handleMouseDown(e, node.id)}
+                  onMouseDown={(e) => handleMouseDown(e, node.id)}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2 text-[#e0e7ef]">
@@ -443,17 +608,55 @@ export const PipelineBuilder = () => {
                       <span className="font-medium">{node.label}</span>
                     </div>
                     <div className="flex gap-1">
-                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-[#7a88a1] hover:text-[#00f6ff]"><Settings className="h-3 w-3" /></Button>
-                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:text-destructive" onClick={() => deleteNode(node.id)}><Trash2 className="h-3 w-3" /></Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 text-[#7a88a1] hover:text-[#00f6ff]"
+                      >
+                        <Settings className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 hover:text-destructive"
+                        onClick={() => deleteNode(node.id)}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs bg-[#23283a] text-[#00f6ff] border-[#00f6ff55]">{node.type}</Badge>
-                    {executionProgress[node.id] === 'running' && <Badge variant="default" className="text-xs bg-yellow-500">Running</Badge>}
-                    {executionProgress[node.id] === 'completed' && <Badge variant="default" className="text-xs bg-green-500">Completed</Badge>}
+                    <Badge
+                      variant="secondary"
+                      className="text-xs bg-[#23283a] text-[#00f6ff] border-[#00f6ff55]"
+                    >
+                      {node.type}
+                    </Badge>
+                    {executionProgress[node.id] === "running" && (
+                      <Badge
+                        variant="default"
+                        className="text-xs bg-yellow-500"
+                      >
+                        Running
+                      </Badge>
+                    )}
+                    {executionProgress[node.id] === "completed" && (
+                      <Badge variant="default" className="text-xs bg-green-500">
+                        Completed
+                      </Badge>
+                    )}
                   </div>
-
+                  {node.type === "data" && (
+                    <div className="mt-4">
+                      <DataSourceUpload
+                        onUpload={(fileOrUrl) => {
+                          // handle upload logic here (e.g., update node state, show preview, etc.)
+                          console.log("Uploaded:", fileOrUrl);
+                        }}
+                      />
+                    </div>
+                  )}
                   {/* Connection Points */}
                   <div
                     className="absolute -left-4 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center"
@@ -461,8 +664,8 @@ export const PipelineBuilder = () => {
                   >
                     <div
                       className="w-5 h-5 bg-[#00f6ff] rounded-full border-2 border-[#23283a] shadow-lg opacity-90 hover:opacity-100 cursor-crosshair hover:scale-125 transition-all duration-150 connection-point"
-                      onMouseDown={e => handleConnectionStart(e, node.id)}
-                      onMouseUp={e => handleConnectionEnd(e, node.id)}
+                      onMouseDown={(e) => handleConnectionStart(e, node.id)}
+                      onMouseUp={(e) => handleConnectionEnd(e, node.id)}
                       title="Input"
                     />
                   </div>
@@ -472,8 +675,8 @@ export const PipelineBuilder = () => {
                   >
                     <div
                       className="w-5 h-5 bg-[#00f6ff] rounded-full border-2 border-[#23283a] shadow-lg opacity-90 hover:opacity-100 cursor-crosshair hover:scale-125 transition-all duration-150 connection-point"
-                      onMouseDown={e => handleConnectionStart(e, node.id)}
-                      onMouseUp={e => handleConnectionEnd(e, node.id)}
+                      onMouseDown={(e) => handleConnectionStart(e, node.id)}
+                      onMouseUp={(e) => handleConnectionEnd(e, node.id)}
                       title="Output"
                     />
                   </div>
