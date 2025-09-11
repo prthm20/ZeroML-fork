@@ -3,10 +3,13 @@ name = "backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.116.1",
     "logging>=0.4.9.6",
     "requests>=2.32.5",
     "uvicorn>=0.35.0",
+    "huggingface-hub",
+    "pandas",
+    "python-multipart",
 ]
