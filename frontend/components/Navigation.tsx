@@ -1,55 +1,99 @@
+"use client"
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Activity, Cpu, Database, GitBranch, Play, Settings, Zap } from "lucide-react";
+import { Brain, Menu, X } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
 
-export const Navigation = () => {
+const Navigation = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <nav className="border-b border-border bg-card/50 backdrop-blur-sm">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <Zap className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              MLFlow Pro
-            </span>
-          </div>
+    <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
           
-          <div className="hidden md:flex items-center gap-1">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <GitBranch className="h-4 w-4" />
-              Pipelines
+          <Link
+          href={"/"}>
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center justify-center w-10 h-10 bg-neural-gradient rounded-lg">
+              <Brain className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-xl font-bold gradient-text">ZeroML</span>
+          </div>
+          </Link>
+          
+
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+              Features
+            </a>
+            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+              Pricing
+            </a>
+            <a href="#docs" className="text-muted-foreground hover:text-foreground transition-colors">
+              Documentation
+            </a>
+            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">
+              About
+            </a>
+          </div>
+
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="ghost" className="text-foreground hover:text-primary">
+              Sign In
             </Button>
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Database className="h-4 w-4" />
-              Datasets
-            </Button>
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Cpu className="h-4 w-4" />
-              Models
-            </Button>
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Activity className="h-4 w-4" />
-              Experiments
+            <Button className="btn-hero">
+              Get Started
             </Button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Badge variant="secondary" className="gap-1">
-            <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
-            Training Active
-          </Badge>
-          <Button size="sm" className="gap-2 bg-gradient-primary">
-            <Play className="h-4 w-4" />
-            Run Pipeline
-          </Button>
-          <Button variant="ghost" size="sm">
-            <Settings className="h-4 w-4" />
-          </Button>
-        </div>
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-border">
+            <div className="flex flex-col space-y-4 pt-4">
+              <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+                Features
+              </a>
+              <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+                Pricing
+              </a>
+              <a href="#docs" className="text-muted-foreground hover:text-foreground transition-colors">
+                Documentation
+              </a>
+              <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">
+                About
+              </a>
+              <div className="flex flex-col space-y-2 pt-4">
+                <Button variant="ghost" className="text-foreground hover:text-primary">
+                  Sign In
+                </Button>
+                <Button className="btn-hero">
+                  Get Started
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
 };
+
+export default Navigation;

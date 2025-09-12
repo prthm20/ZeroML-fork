@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react";
-import { Navigation } from "@/components/Navigation";
 import { HeroSection } from "@/components/HeroSection";
 import { Dashboard } from "@/components/Dashboard";
 import { PipelineBuilder } from "@/components/PipelineBuilder";
@@ -27,12 +26,7 @@ const MainLayout = () => {
             <Dashboard />
           </div>
         );
-      case 'pipeline':
-        return (
-          <div className="h-[calc(100vh-4rem)]">
-            <PipelineBuilder />
-          </div>
-        );
+      
       default:
         return <HeroSection setCurrentView={setCurrentView} />;
     }
@@ -46,10 +40,8 @@ const MainLayout = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <Navigation />
-
       {/* Quick Navigation */}
-      <div className="border-b border-[#23283a] bg-[#181c27]/80 shadow-lg backdrop-blur-md">
+      <div className="border-b border-[#23283a] bg-[#181c27]/80 shadow-lg backdrop-blur-md sticky top-0 z-30">
         <div className="container flex items-center gap-2 py-3">
           <Button
             variant={currentView === 'hero' ? 'default' : 'ghost'}
@@ -94,7 +86,8 @@ const MainLayout = () => {
       </div>
 
       {/* Main Content */}
-      <main className="relative min-h-[calc(100vh-4rem)]">
+      <main className="relative min-h-[calc(100vh-4rem)] pt-12">
+        {/* pt-12 ensures content starts after navbar (py-3 ≈ 48px) */}
         <div className="absolute inset-0 pointer-events-none z-0"
           style={{
             background: "radial-gradient(ellipse at 60% 40%, #23283a 0%, #10141a 100%)",

@@ -50,14 +50,19 @@ export const HeroSection = ({ setCurrentView }: HeroSectionProps) => {
 					</p>
 
 					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+						<a
+						href="/builder">
+
+						
 						<Button
 							className="bg-gradient-to-r from-[#00f6ff] to-[#3b82f6] text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:from-[#3b82f6] hover:to-[#00f6ff] transition"
-							onClick={() => setCurrentView("pipeline")}
+							
 						>
 							<Play className="h-5 w-5" />
 							Start Building
 							<ArrowRight className="h-5 w-5" />
 						</Button>
+						</a>
 						<Button
 							variant="outline"
 							size="lg"
