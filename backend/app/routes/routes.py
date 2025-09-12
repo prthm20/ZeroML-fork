@@ -8,17 +8,17 @@ import pandas as pd
 from huggingface_hub import HfApi
 import os
 import tempfile
+from dotenv import load_dotenv
+import os
 
 logger = setup_logger(__name__)
 
 router = APIRouter()
 
-HF_TOKEN = "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"  # Store your token in env variable
-HF_REPO_ID = "prthm20/ZeoMl"  # Replace with your repo name
+HF_TOKEN = os.getenv("HF_TOKEN")
+HF_REPO_ID = "Thunder1245/Zero-ML-dataset"  # Replace with your repo name
 
 api = HfApi()
-
-
 
 @router.get("/")
 async def home():
