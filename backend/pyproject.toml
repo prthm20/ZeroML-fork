@@ -12,4 +12,5 @@ dependencies = [
     "huggingface-hub",
     "pandas",
     "python-multipart",
+    "dotenv>=0.9.9",
 ]
