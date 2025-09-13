@@ -23,7 +23,7 @@ interface Node {
   type: "data" | "preprocessing" | "model" | "evaluation";
   label: string;
   position: { x: number; y: number };
-  output?: any;
+  output?: undefined;
 }
 
 
