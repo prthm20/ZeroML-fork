@@ -163,14 +163,17 @@ export const PipelineBuilder = () => {
   };
 
   /** --- Mouse Position Utilities --- */
-  const getScreenPosition = (clientX: number, clientY: number) => {
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return { x: 0, y: 0 };
-    return {
-      x: (clientX - rect.left - panOffset.x) / zoom,
-      y: (clientY - rect.top - panOffset.y) / zoom,
-    };
-  };
+  const getScreenPosition = useCallback(
+    (clientX: number, clientY: number) => {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return { x: 0, y: 0 };
+      return {
+        x: (clientX - rect.left - panOffset.x) / zoom,
+        y: (clientY - rect.top - panOffset.y) / zoom,
+      };
+    },
+    [zoom, panOffset]
+  );
 
   /** --- Node Drag & Connect --- */
   const handleMouseDown = useCallback(
@@ -299,10 +302,14 @@ export const PipelineBuilder = () => {
   };
 
   // Canvas mouse up: stop panning
-  const handleCanvasMouseUp = (e: React.MouseEvent) => {
+  const handleCanvasMouseUp = () => {
     setIsPanning(false);
     setPanStart(null);
     handleMouseUp();
+  };
+
+  const someFunction = (_clientX: number, _clientY: number) => {
+    // Some implementation here
   };
 
   return (
