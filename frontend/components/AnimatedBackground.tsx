@@ -4,98 +4,60 @@ const AnimatedBackground = () => {
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950/20 to-slate-950"></div>
       
-      {/* Animated SVG shapes */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {/* Floating circles */}
-        <circle cx="10" cy="20" r="2" fill="rgba(139, 92, 246, 0.3)" className="animate-pulse">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0,0; 10,5; 0,0"
-            dur="6s"
-            repeatCount="indefinite"
-          />
-        </circle>
+      {/* Floating geometric shapes */}
+      <div className="absolute inset-0">
+        {/* Large floating circles */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-violet-600/10 to-purple-600/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 rounded-full blur-3xl animate-float-delayed"></div>
         
-        <circle cx="80" cy="30" r="1.5" fill="rgba(168, 85, 247, 0.4)" className="animate-pulse">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0,0; -5,10; 0,0"
-            dur="8s"
-            repeatCount="indefinite"
-          />
-        </circle>
+        {/* Small floating particles */}
+        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-violet-400 rounded-full animate-pulse-slow"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-2/3 left-1/5 w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse-slow animation-delay-2000"></div>
+      </div>
+      
+      {/* Animated ML Pipeline Visualization */}
+      <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 100 100" preserveAspectRatio="none">
+        {/* Pipeline nodes */}
+        <circle cx="15" cy="30" r="1" fill="rgba(16, 185, 129, 0.6)" className="animate-pulse-slow" />
+        <circle cx="35" cy="25" r="0.8" fill="rgba(139, 92, 246, 0.6)" className="animate-pulse-slow animation-delay-500" />
+        <circle cx="55" cy="35" r="1.2" fill="rgba(59, 130, 246, 0.6)" className="animate-pulse-slow animation-delay-1000" />
+        <circle cx="75" cy="30" r="0.9" fill="rgba(244, 63, 94, 0.6)" className="animate-pulse-slow animation-delay-1500" />
         
-        <circle cx="30" cy="70" r="1" fill="rgba(147, 51, 234, 0.5)">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0,0; 8,-3; 0,0"
-            dur="10s"
-            repeatCount="indefinite"
-          />
-        </circle>
-        
-        <circle cx="70" cy="80" r="2.5" fill="rgba(126, 34, 206, 0.2)">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0,0; -12,8; 0,0"
-            dur="12s"
-            repeatCount="indefinite"
-          />
-        </circle>
-        
-        {/* Animated ML Pipeline Visualization */}
-        <g transform="translate(20, 10)">
-          {/* Data Flow Lines */}
-          <path
-            d="M5,40 Q30,35 50,40"
-            stroke="rgba(139, 92, 246, 0.6)"
-            strokeWidth="0.5"
-            fill="none"
-            strokeDasharray="2,2"
-            className="animate-pulse"
-          >
-            <animate
-              attributeName="stroke-dashoffset"
-              values="0;-4"
-              dur="2s"
-              repeatCount="indefinite"
-            />
-          </path>
-          
-          <path
-            d="M50,40 Q70,45 85,40"
-            stroke="rgba(168, 85, 247, 0.6)"
-            strokeWidth="0.5"
-            fill="none"
-            strokeDasharray="2,2"
-            className="animate-pulse"
-          >
-            <animate
-              attributeName="stroke-dashoffset"
-              values="0;-4"
-              dur="2.5s"
-              repeatCount="indefinite"
-            />
-          </path>
-          
-          {/* Pipeline Nodes */}
-          <rect x="2" y="38" width="6" height="4" rx="1" fill="rgba(16, 185, 129, 0.7)" />
-          <rect x="47" y="38" width="6" height="4" rx="1" fill="rgba(139, 92, 246, 0.7)" />
-          <rect x="82" y="38" width="6" height="4" rx="1" fill="rgba(244, 63, 94, 0.7)" />
-        </g>
+        {/* Connecting lines with flow animation */}
+        <path
+          d="M16,30 Q25,28 34,25"
+          stroke="rgba(139, 92, 246, 0.4)"
+          strokeWidth="0.3"
+          fill="none"
+          strokeDasharray="1,1"
+          className="animate-flow"
+        />
+        <path
+          d="M36,25 Q45,30 54,35"
+          stroke="rgba(139, 92, 246, 0.4)"
+          strokeWidth="0.3"
+          fill="none"
+          strokeDasharray="1,1"
+          className="animate-flow animation-delay-500"
+        />
+        <path
+          d="M56,35 Q65,32 74,30"
+          stroke="rgba(139, 92, 246, 0.4)"
+          strokeWidth="0.3"
+          fill="none"
+          strokeDasharray="1,1"
+          className="animate-flow animation-delay-1000"
+        />
       </svg>
       
       {/* Grid pattern */}
       <div 
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-10"
         style={{
-          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(139, 92, 246, 0.2) 2px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(139, 92, 246, 0.3) 1px, transparent 0)`,
           backgroundSize: '50px 50px'
         }}
       />
