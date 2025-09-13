@@ -308,9 +308,6 @@ export const PipelineBuilder = () => {
     handleMouseUp();
   };
 
-  const someFunction = (_clientX: number, _clientY: number) => {
-    // Some implementation here
-  };
 
   return (
     <div className="h-full flex bg-[#10141a] text-white">

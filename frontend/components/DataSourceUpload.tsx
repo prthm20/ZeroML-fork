@@ -4,14 +4,22 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Upload, Link2, FileText, CheckCircle2, XCircle } from "lucide-react";
+import axios from "axios"
+import { useToast } from "@/components/ui/use-toast"
 
 const ACCEPTED_TYPES = [
   ".csv",
   ".json",
+  ".xls",
   ".xlsx",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "application/json",
-  "text/csv"
+  ".parquet",
+  ".h5",
+  ".feather",
+  ".orc",
+  ".dta",
+  ".sas7bdat",
+  ".sav",
+  ".html"
 ];
 
 export const DataSourceUpload: React.FC<{
@@ -21,36 +29,85 @@ export const DataSourceUpload: React.FC<{
   const [file, setFile] = useState<File | null>(null);
   const [apiUrl, setApiUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    const ext = f.name.split(".").pop()?.toLowerCase();
-    if (!["csv", "json", "xlsx"].includes(ext || "")) {
-      setError("Only .csv, .json, or .xlsx files are allowed.");
-      setFile(null);
-      return;
-    }
+    
     setError(null);
     setFile(f);
+    setStatus("idle");
   };
 
-  const handleUpload = () => {
-    if (mode === "file" && file) {
-      onUpload(file);
-    } else if (mode === "api" && apiUrl) {
-      if (!/^https?:\/\/.+/.test(apiUrl)) {
-        setError("Enter a valid API URL.");
-        return;
+  const handleUpload = async () => {
+    try {
+      if (mode === "file" && file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await axios.post("http://localhost:7860/upload-file", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        console.log(res);
+
+        toast({
+          title: "Dataset Uploaded",
+          description: `File uploaded successfully: ${file.name}`,
+          className: "backdrop-blur-lg bg-green-500/20 text-green-300 border border-green-400/40 shadow-[0_0_20px_rgba(34,197,94,0.6)] rounded-xl",
+          duration: 4000,
+        });
+
+        setStatus("success");
+      } else if (mode === "api" && apiUrl) {
+        if (!/^https?:\/\/.+/.test(apiUrl)) {
+          setError("Enter a valid API URL.");
+          setStatus("error");
+          return;
+        }
+        const res = await axios.post("/api/upload-url", { url: apiUrl });
+        console.log("API source registered:", res.data);
+
+        toast({
+          title: "API Registered",
+          description: `Source added: ${apiUrl}`,
+          className: "backdrop-blur-lg bg-green-500/20 text-green-300 border border-green-400/40 shadow-[0_0_20px_rgba(34,197,94,0.6)] rounded-xl",
+          duration: 4000,
+        });
+
+        setStatus("success");
+        onUpload(apiUrl);
       }
-      setError(null);
-      onUpload(apiUrl);
-    }
-  };
+    } catch (err: unknown) {
+  console.error(err);
+  setError("Upload failed. Try again.");
+  setStatus("error");
+
+  toast({
+    title: "Upload Failed",
+    description:
+      err instanceof Error ? err.message : "Something went wrong",
+    className:
+      "backdrop-blur-lg bg-red-500/20 text-red-300 border border-red-400/40 shadow-[0_0_20px_rgba(239,68,68,0.6)] rounded-xl",
+    duration: 4000,
+  });
+}
+  }
+
+
+  // Decide card border color based on status
+  const borderColor =
+    status === "success"
+      ? "border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]"
+      : status === "error"
+      ? "border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]"
+      : "border-[#23283a]";
 
   return (
-    <Card className="bg-[#181c27] border-[#23283a] p-6 rounded-xl shadow-lg w-full max-w-md mx-auto">
+    <Card className={`bg-[#181c27] ${borderColor} p-6 rounded-xl shadow-lg w-full max-w-md mx-auto transition-all duration-300`}>
       <div className="flex gap-2 mb-4">
         <Button
           variant={mode === "file" ? "default" : "outline"}

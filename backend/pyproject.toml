@@ -13,4 +13,8 @@ dependencies = [
     "pandas",
     "python-multipart",
     "dotenv>=0.9.9",
+    "pyreadstat>=1.3.1",
+    "lxml>=6.0.1",
+    "html5lib>=1.1",
+    "beautifulsoup4>=4.13.5",
 ]
