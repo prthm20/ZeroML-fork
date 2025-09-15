@@ -3,8 +3,8 @@
 > **ZeroML** – Build. Train. Deploy. Version. Visualize. Optimize. All in one platform.
 
 [![PyPI Version](https://img.shields.io/pypi/v/zeroml)](https://pypi.org/project/zeroml/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Python Version](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-Apache_2.0-green)](LICENSE)
+[![Python Version](https://img.shields.io/badge/python-3.13-blue)](https://www.python.org/downloads/)
 [![Hugging Face](https://img.shields.io/badge/HF-Integration-orange)](https://huggingface.co/)
 [![RunPod](https://img.shields.io/badge/RunPod-Integration-purple)](https://www.runpod.io/)
 
