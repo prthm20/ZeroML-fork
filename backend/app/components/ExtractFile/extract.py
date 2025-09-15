@@ -11,7 +11,7 @@ load_dotenv()
 
 router = APIRouter()
 
-HF_REPO_ID = "prthm20/ZeoMl"  # your repo ID
+HF_REPO_ID = os.getenv("HF_DATA_REPO")  # your repo ID
 HF_TOKEN = os.getenv("HF_TOKEN")  # Hugging Face API token
 BASE_URL = f"https://huggingface.co/datasets/{HF_REPO_ID}/resolve/main/uploads"
 
