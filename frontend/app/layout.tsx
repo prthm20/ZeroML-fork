@@ -34,8 +34,8 @@ export default function RootLayout({
       >
         <Navigation/>
         {children}
-        <Analytics/>
         <SpeedInsights/>
+        <Analytics/>
         <Toaster/>
         <Footer />
       </body>
