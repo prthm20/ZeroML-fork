@@ -28,8 +28,15 @@ interface Node {
   type: "data" | "preprocessing" | "model" | "evaluation";
   label: string;
   position: { x: number; y: number };
-  output?: string | File;
+  output?: 
+    | string
+    | File
+    | { cleaned: boolean; data: string | File }
+    | { model: string; trained: boolean }
+    | { accuracy: number }
+    | null;
 }
+
 
 interface Connection {
   from: string;
@@ -92,17 +99,47 @@ export const PipelineBuilder = () => {
   };
 
   const runNode = async (node: Node) => {
-    const inputs = getInputData(node.id);
-    let result;
-    switch (node.type) {
-      case "data": result = node.output || null; break;
-      case "preprocessing": result = await cleanData(inputs[0]); break;
-      case "model": result = await trainModel(inputs[0]); break;
-      case "evaluation": result = await evaluateModel(inputs[0]); break;
+  const inputs = getInputData(node.id);
+  let inputForNode: string | File | undefined;
+
+  // Pick only valid input for this node
+  if (inputs[0]) {
+    if (typeof inputs[0] === "string" || inputs[0] instanceof File) {
+      inputForNode = inputs[0];
+    } else if ("data" in inputs[0]) {
+      // For preprocessing, maybe previous node returned cleaned data object
+      inputForNode = inputs[0].data;
+    } else {
+      inputForNode = undefined;
     }
-    setNodes(prev => prev.map(n => n.id === node.id ? { ...n, output: result } : n));
-    return result;
-  };
+  }
+
+  let result: Node["output"];
+  switch (node.type) {
+    case "data":
+      result = node.output || null;
+      break;
+    case "preprocessing":
+      if (inputForNode) result = await cleanData(inputForNode);
+      else result = null;
+      break;
+    case "model":
+      if (inputForNode) result = await trainModel(inputForNode);
+      else result = null;
+      break;
+    case "evaluation":
+      if (inputForNode) result = await evaluateModel(inputForNode);
+      else result = null;
+      break;
+  }
+
+  setNodes(prev =>
+    prev.map(n => (n.id === node.id ? { ...n, output: result } : n))
+  );
+
+  return result;
+};
+
 
   const runPipeline = async () => {
     if (!nodes.length) return;
