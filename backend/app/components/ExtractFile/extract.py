@@ -5,14 +5,13 @@ import requests
 import pandas as pd
 from fastapi import APIRouter, HTTPException, Query
 from dotenv import load_dotenv
-
-# Load .env file (make sure you have HF_TOKEN inside it)
+    
 load_dotenv()
 
 router = APIRouter()
 
-HF_REPO_ID = os.getenv("HF_DATA_REPO")  # your repo ID
-HF_TOKEN = os.getenv("HF_TOKEN")  # Hugging Face API token
+HF_REPO_ID = os.getenv("HF_DATA_REPO")
+HF_TOKEN = os.getenv("HF_TOKEN")
 BASE_URL = f"https://huggingface.co/datasets/{HF_REPO_ID}/resolve/main/uploads"
 
 

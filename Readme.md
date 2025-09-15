@@ -76,18 +76,87 @@ Comming soon...
 
 ---
 
-## 🤝 Contributing
 
-We welcome contributions!
 
-1. Fork the repo
-2. Open a pull request
+# 🤝 Contributing
+
+We welcome contributions! Whether it’s fixing bugs, adding features, or improving documentation, your help is highly appreciated. Follow the instructions below to get the project running locally.
 
 ---
 
+## 🛠 Setup Instructions
+
+### 1. Frontend
+
+1. Navigate to the frontend folder:
+
+```bash
+cd frontend
+````
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+* The frontend will be accessible at: [http://localhost:3000](http://localhost:3000)
+
+---
+
+### 2. Backend
+
+1. Navigate to the backend folder:
+
+```bash
+cd backend
+```
+
+2. Sync and run the backend:
+
+```bash
+uv sync
+uv run main.py
+```
+
+#### Managing Dependencies
+
+* **Add a dependency:**
+
+```bash
+uv add <dependency_name>
+```
+
+* **Remove a dependency:**
+
+```bash
+uv remove <dependency_name>
+```
+
+---
+
+### ✅ Tips for Contributors
+
+* Make sure to **pull the latest changes** before starting your work.
+* Follow **consistent code formatting** (Prettier/ESLint recommended).
+* Test your changes thoroughly before creating a pull request.
+* Provide a clear **description of your changes** in the PR.
+
+---
+
+Thanks for contributing! Your help makes this project better for everyone. 🚀
+
+
+
 ## 🛡 License
 
-ZeroML is licensed under the **Apache 2.0 License**
+ZeroML is licensed under the **Apache-2.0 License**
 
 ---
 
