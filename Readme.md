@@ -66,13 +66,6 @@ All pipelines, models, and datasets are **fully versioned** and ready for collab
 
 ---
 
-## 🎬 Live Demo
-
-[![Live Demo](https://zeroml.dev)
-Experience ZeroML in action with **real-time drag-and-drop pipelines and instant deployment**.
-
----
-
 
 ## 📚 Documentation
 
