@@ -6,13 +6,13 @@ from pathlib import Path
 from fastapi import HTTPException
 import pandas as pd
 import pyreadstat
-from requests.exceptions import HTTPError
+from huggingface_hub.utils import HfHubHTTPError as HTTPError
 
 load_dotenv()
 
 HF_TOKEN = os.getenv("HF_TOKEN")
 
-HF_DATA_REPO = "Thunder1245/Zero-ML-dataset-2"
+HF_DATA_REPO = "prthm20/ZeoMl"
 
 api = HfApi()
 

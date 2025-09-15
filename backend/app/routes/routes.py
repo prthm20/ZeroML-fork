@@ -36,4 +36,14 @@ async def upload_file(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/get-file")
+async def get_file(filename: str):
+    from app.components.ExtractFile.extract import get_file as extract_file
+    try:
+        res = await extract_file(filename)
 
+        return res
+
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail=str(e))
