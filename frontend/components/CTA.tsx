@@ -28,23 +28,21 @@ const CTA = () => {
             
             <p className="text-xl text-slate-300 mb-10 leading-relaxed max-w-2xl mx-auto">
               Join thousands of data scientists who are already building the future with our platform.
-              Start your free trial today.
+              Start today.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <button className="group bg-gradient-to-r from-violet-600 to-purple-600 text-white px-10 py-4 rounded-lg text-lg font-semibold hover:from-violet-700 hover:to-purple-700 transition-all duration-300 flex items-center space-x-2 shadow-2xl shadow-violet-500/25">
-                <span>Start Free Trial</span>
+                <span>Get Started</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
               
               <button className="text-slate-300 hover:text-white transition-colors text-lg font-medium">
-                Schedule Demo
+                Watch Demo
               </button>
             </div>
             
-            <div className="mt-8 text-sm text-slate-400">
-              No credit card required • 14-day free trial • Cancel anytime
-            </div>
+            
           </div>
         </div>
       </div>
