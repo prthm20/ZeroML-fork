@@ -1,8 +1,8 @@
-"use client";
-
-import React from "react";
+"use client"
 import { motion } from "framer-motion";
 import { Github, Cpu, Package, Rocket } from "lucide-react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const stats = [
   { id: 1, label: "Open Source", value: "Community-first", icon: Github },
@@ -10,10 +10,31 @@ const stats = [
   { id: 3, label: "Extensible", value: "Plugins & SDKs", icon: Package },
 ];
 
+type Contributor = {
+  id: number;
+  login: string;
+  avatar_url: string;
+  html_url: string;
+  contributions:string
+};
+
 export default function AboutPage() {
+  const [contributors, setContributors] = useState<Contributor[]>([]);
+
+  useEffect(() => {
+    fetch("https://api.github.com/repos/ParagGhatage/ZeroML/contributors")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setContributors(data);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch contributors", err));
+  }, []);
+
   return (
     <main className="w-full min-h-screen bg-[#0b0f14] text-slate-200 relative overflow-hidden mt-10">
-      {/* Hero Section */}
+       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center px-6 py-20">
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
@@ -155,6 +176,40 @@ export default function AboutPage() {
           </motion.a>
         </div>
       </section>
+      
+          <section>
+      {contributors.length > 0 ? (
+        <div className="mt-10 flex flex-wrap justify-center gap-6">
+          {contributors.map((contrib) => (
+            <motion.a
+  key={contrib.id}
+  whileHover={{ y: -5, scale: 1.03 }}
+  href={contrib.html_url}
+  target="_blank"
+  className={`flex flex-col items-center w-32 p-4 rounded-xl shadow-lg text-center border ${
+    ["ParagGhatage", "prthm20"].includes(contrib.login)
+      ? "border-yellow-400" // gold border for creators
+      : "border-slate-800/50 bg-gradient-to-br from-[#07121a]/40 to-transparent"
+  }`}
+>
+  <Image
+    src={contrib.avatar_url}
+    alt={contrib.login}
+    width={80}
+    height={80}
+    className="rounded-full ring-1 ring-slate-700/40 mb-2"
+    unoptimized
+  />
+  <span className="font-semibold text-slate-200">{contrib.login}</span>
+  <span className="text-sm text-slate-400">{contrib.contributions} commits</span>
+</motion.a>
+
+          ))}
+        </div>
+      ) : (
+        <p className="text-slate-500 mt-6">Loading contributors...</p>
+      )}
+    </section>
     </main>
   );
 }
