@@ -1,5 +1,5 @@
 <a href="https://zeroml.dev" target="_blank" rel="noopener noreferrer">
-  <img src="https://github.com/ParagGhatage/ZeroML/blob/main/frontend/public/ZeroML_banner.png" alt="ZeroML Banner">
+  <img src="https://github.com/ParagGhatage/ZeroML/blob/main/web/public/ZeroML_banner.png" alt="ZeroML Banner">
 </a>
 
 
