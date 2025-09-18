@@ -149,37 +149,20 @@ export default function AboutPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="max-w-6xl mx-auto px-6 py-20 flex flex-col items-center text-center">
-        <h2 className="text-3xl md:text-4xl font-bold">Join the Community</h2>
-        <p className="mt-4 text-slate-400 max-w-2xl">
-          ZeroML is more than just a toolkit - it’s a growing community of
-          developers, contributors, and researchers shaping the future of machine
-          learning together.
-        </p>
+      <section className="max-w-6xl mx-auto px-6 py-20 pb-5 text-center">
+  <h2 className="text-3xl md:text-4xl font-bold">Our Contributors</h2>
+  <p className="mt-4 text-slate-400 max-w-2xl mx-auto">
+    ZeroML is built in the open by passionate developers. Every commit, issue, and
+    idea pushes the project forward. Here are some of the amazing people shaping it.
+  </p>
 
-        <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            href="https://github.com/ParagGhatage/ZeroML"
-            target="_blank"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold shadow-lg"
-          >
-            <Github className="w-5 h-5" /> Star on GitHub
-          </motion.a>
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            href="https://zeroml.dev"
-            target="_blank"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-slate-800/50 ring-1 ring-slate-700/40 text-slate-200 font-semibold"
-          >
-            <Rocket className="w-5 h-5 text-orange-400" /> Read Docs
-          </motion.a>
-        </div>
+        
       </section>
       
-          <section>
+          <section
+          className=" mb-10">
       {contributors.length > 0 ? (
-        <div className="mt-10 flex flex-wrap justify-center gap-6">
+        <div className=" flex flex-wrap justify-center gap-6">
           {contributors.map((contrib) => (
             <motion.a
   key={contrib.id}
