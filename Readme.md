@@ -91,7 +91,7 @@ We welcome contributions! Whether it’s fixing bugs, adding features, or improv
 1. Navigate to the frontend folder:
 
 ```bash
-cd frontend
+cd web
 ````
 
 2. Install dependencies:
@@ -115,7 +115,7 @@ npm run dev
 1. Navigate to the backend folder:
 
 ```bash
-cd backend
+cd api
 ```
 
 2. Sync and run the backend:
