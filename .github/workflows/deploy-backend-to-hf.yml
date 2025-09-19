@@ -54,7 +54,7 @@ jobs:
           cd ..
 
           # Copy backend files into the cloned space directory
-          cp -R backend/. space-backend/
+          cp -R api/. space-backend/
 
           # Commit & push
           cd space-backend
