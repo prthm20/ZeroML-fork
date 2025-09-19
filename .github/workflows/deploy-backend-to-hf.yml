@@ -61,7 +61,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add --all
-          git commit -m "Auto-deploy backend: ${{ github.sha }}" || echo "No changes to commit"
+          git commit -m "Auto-deploy api: ${{ github.sha }}" || echo "No changes to commit"
           git push origin main
 
       - name: ✅ Done
