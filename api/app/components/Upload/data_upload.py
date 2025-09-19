@@ -12,7 +12,7 @@ load_dotenv()
 
 HF_TOKEN = os.getenv("HF_TOKEN")
 
-HF_DATA_REPO = "Thunder1245/Zero-ML-dataset"
+HF_DATA_REPO = os.getenv("HF_DATA_REPO")
 
 api = HfApi()
 
