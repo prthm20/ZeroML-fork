@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Upload, Link2, FileText, CheckCircle2, XCircle } from "lucide-react";
 import axios from "axios"
 import { useToast } from "@/components/ui/use-toast"
-
+import { useSession } from "@/context/SessionContext";
 const ACCEPTED_TYPES = [
   ".csv",
   ".json",
@@ -32,7 +32,7 @@ export const DataSourceUpload: React.FC<{
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-
+  const { sessionId, setSessionId } = useSession();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
@@ -48,7 +48,7 @@ export const DataSourceUpload: React.FC<{
         const formData = new FormData();
         formData.append("file", file);
 
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_MAIN_SERVER_URL}/upload-file`, formData, {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_MAIN_SERVER_URL}/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
@@ -60,7 +60,7 @@ export const DataSourceUpload: React.FC<{
           className: "backdrop-blur-lg bg-green-500/20 text-green-300 border border-green-400/40 shadow-[0_0_20px_rgba(34,197,94,0.6)] rounded-xl",
           duration: 4000,
         });
-
+        setSessionId(res.data.session_id);
         setStatus("success");
       } else if (mode === "api" && apiUrl) {
         if (!/^https?:\/\/.+/.test(apiUrl)) {

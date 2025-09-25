@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
 import { Toaster } from "@/components/ui/toaster";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import { SessionProvider } from "@/context/SessionContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,7 +33,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navigation/>
-        {children}
+       <SessionProvider>
+          {children}
+        </SessionProvider>
         <SpeedInsights/>
         <Analytics/>
         <Toaster/>
