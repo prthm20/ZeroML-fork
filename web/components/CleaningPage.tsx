@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useSession } from "@/context/SessionContext";
-
+import SaveCleanedDataButton from "./Saving";
 interface CleaningPageProps {
   onResult?: (result: any) => void;
 }
@@ -80,6 +80,10 @@ export default function CleaningPage({ onResult }: CleaningPageProps) {
         >
           Send
         </button>
+      </div>
+      <div className="p-2 border-t border-gray-700 bg-gray-800">
+              <SaveCleanedDataButton sessionId={sessionId} />
+
       </div>
 
       {/* Data Preview */}

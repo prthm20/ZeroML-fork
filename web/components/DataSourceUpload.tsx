@@ -47,8 +47,8 @@ export const DataSourceUpload: React.FC<{
       if (mode === "file" && file) {
         const formData = new FormData();
         formData.append("file", file);
-
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_MAIN_SERVER_URL}/upload`, formData, {
+       console.log("reached")
+        const res = await axios.post( 'http://localhost:7860/upload', formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
