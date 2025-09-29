@@ -3,6 +3,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
 import {
   Database,
   Filter,
@@ -23,7 +24,7 @@ import { trainModel } from "./pipeline-utils/TrainModel";
 import { evaluateModel } from "./pipeline-utils/EvaluateModel";
 import CleaningPage from "./CleaningPage";
 
-
+type PreviewRow = Record<string, string | number | boolean | null>;
 interface Node {
   id: string;
   type: "data" | "preprocessing" | "model" | "evaluation";
@@ -35,7 +36,8 @@ interface Node {
     | { cleaned: boolean; data: string | File }
     | { model: string; trained: boolean }
     | { accuracy: number }
-    | null;
+    |PreviewRow[] |null
+    
 }
 
 

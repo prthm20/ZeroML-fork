@@ -32,7 +32,7 @@ export const DataSourceUpload: React.FC<{
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const { sessionId, setSessionId } = useSession();
+  const { setSessionId } = useSession();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;

@@ -27,8 +27,8 @@ const SaveCleanedDataButton: React.FC<SaveCleanedDataButtonProps> = ({ sessionId
       const data = await res.json();
 
       setMessage(data.message || "✅ Cleaned file saved successfully!");
-    } catch (err: any) {
-      setMessage(`❌ Error: ${err.message}`);
+    } catch (err: unknown) {
+      setMessage(`❌ Error: ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
