@@ -21,7 +21,8 @@ import {
 import { DataSourceUpload } from "./DataSourceUpload";
 import { trainModel } from "./pipeline-utils/TrainModel";
 import { evaluateModel } from "./pipeline-utils/EvaluateModel";
-import { cleanData } from "./pipeline-utils/CleanData";
+import CleaningPage from "./CleaningPage";
+
 
 interface Node {
   id: string;
@@ -120,8 +121,7 @@ export const PipelineBuilder = () => {
       result = node.output || null;
       break;
     case "preprocessing":
-      if (inputForNode) result = await cleanData(inputForNode);
-      else result = null;
+      result = node.output || null;
       break;
     case "model":
       if (inputForNode) result = await trainModel(inputForNode);
@@ -357,6 +357,11 @@ export const PipelineBuilder = () => {
                   {node.type === "data" && (
                     <div className="mt-4">
                       <DataSourceUpload onUpload={fileOrUrl => setNodes(prev => prev.map(n => n.id === node.id ? { ...n, output: fileOrUrl } : n))} />
+                    </div>
+                  )}
+                  {node.type === "preprocessing" && (
+                    <div className="mt-4">
+                      <CleaningPage onResult={fileOrUrl => setNodes(prev => prev.map(n => n.id === node.id ? { ...n, output: fileOrUrl } : n))} />
                     </div>
                   )}
 
