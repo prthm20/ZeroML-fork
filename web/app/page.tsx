@@ -7,7 +7,7 @@ import CTA from '@/components/CTA';
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-900">
+  <div className="min-h-screen bg-[#0b0f14] text-slate-200">
       <HeroSection />
       <Features />
       <Platform />

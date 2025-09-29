@@ -88,18 +88,18 @@ const Stats = () => {
               className="text-center group"
             >
               <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:border-violet-500/50 transition-all duration-300 hover:transform hover:-translate-y-2">
-                <div className="text-4xl md:text-5xl font-bold text-white mb-4">
-                  <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
+                  <div className="text-4xl md:text-5xl font-bold text-white mb-4">
+                  <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
                     {formatValue(animatedValues[index], stat)}
                   </span>
-                  <span className="text-violet-400">{stat.suffix}</span>
+                  <span className="text-orange-400">{stat.suffix}</span>
                 </div>
                 <div className="text-slate-300 font-medium">{stat.label}</div>
                 
                 {/* Animated progress bar */}
                 <div className="w-full bg-slate-700 rounded-full h-1 mt-4 overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-violet-500 to-purple-500 rounded-full transition-all duration-2000 ease-out"
+                    className="h-full bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full transition-all duration-2000 ease-out"
                     style={{ 
                       width: isVisible ? '100%' : '0%',
                       transitionDelay: `${index * 200}ms`
