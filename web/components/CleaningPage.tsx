@@ -2,17 +2,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSession } from "@/context/SessionContext";
 import SaveCleanedDataButton from "./Saving";
+type PreviewRow = Record<string, string | number | boolean | null>;
 interface CleaningPageProps {
-  onResult?: (result: any) => void;
+  onResult?: (result: PreviewRow[]) => void;
 }
-
 export default function CleaningPage({ onResult }: CleaningPageProps) {
   const { sessionId } = useSession();
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
     { role: "system", content: "Upload your dataset and start cleaning with natural language queries." }
   ]);
   const [input, setInput] = useState("");
-  const [preview, setPreview] = useState<any[]>([]);
+  const [preview, setPreview] = useState<PreviewRow[]>([]);
   const [loading, setLoading] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);

@@ -1,6 +1,6 @@
 "use client"
 import { motion } from "framer-motion";
-import { Github, Cpu, Package, Rocket } from "lucide-react";
+import { Github, Cpu, Package } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
