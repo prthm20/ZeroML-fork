@@ -233,7 +233,7 @@ async def train_model(
                 model = RandomForestRegressor(**final_params)
                 model_choice = "RandomForestRegressor"
 
-        # === Fixt model with try/except to capture the exact failing array ===
+        # === Fit model with try/except to capture the exact failing array ===
         try:
             model.fit(X_train, y_train)
         except Exception as fit_exc:
