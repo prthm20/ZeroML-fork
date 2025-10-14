@@ -1,19 +1,30 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
+// Type for hyperparameters (string keys with string or number values)
+type Hyperparams = Record<string, string | number | boolean>;
+
+// Type for training result
+interface TrainingResult {
+  problem_type: string;
+  model_name: string;
+  metrics: Record<string, number>;
+  model_path: string;
+}
+
 export default function TrainModelPage() {
   const [file, setFile] = useState<File | null>(null);
-  const [model, setModel] = useState("");
-  const [hyperparams, setHyperparams] = useState<any>({});
-  const [results, setResults] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+  const [model, setModel] = useState<string>("");
+  const [hyperparams, setHyperparams] = useState<Hyperparams>({});
+  const [results, setResults] = useState<TrainingResult | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const modelOptions = [
     "RandomForestClassifier",
@@ -25,19 +36,19 @@ export default function TrainModelPage() {
 
   // Fetch hyperparameters when model changes
   useEffect(() => {
-    if (model) {
-      axios
-        .get(`http://localhost:7860/hyperparameters?model_name=${model}`)
-        .then((res) => {
-          setHyperparams(res.data.default_hyperparameters);
-        })
-        .catch(() => setHyperparams({}));
-    }
+    if (!model) return;
+
+    axios
+      .get<{ default_hyperparameters: Hyperparams }>(
+        `http://localhost:7860/hyperparameters?model_name=${model}`
+      )
+      .then((res) => setHyperparams(res.data.default_hyperparameters))
+      .catch(() => setHyperparams({}));
   }, [model]);
 
   // Update individual hyperparameter values
   const handleParamChange = (key: string, value: string) => {
-    setHyperparams((prev: any) => ({
+    setHyperparams((prev) => ({
       ...prev,
       [key]: value,
     }));
@@ -53,16 +64,18 @@ export default function TrainModelPage() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("model_choice", model);
-    console.log("Sending params:", JSON.stringify(hyperparams));
     formData.append("params", JSON.stringify(hyperparams));
 
     try {
-      const res = await axios.post("http://localhost:7860/train-model", formData,{
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+      const res = await axios.post<TrainingResult>(
+        "http://localhost:7860/train-model",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
       setResults(res.data);
-    } catch (err: any) {
-      alert(err.response?.data?.detail || "Training failed");
+    } catch (err) {
+      const error = err as AxiosError<{ detail: string }>;
+      alert(error.response?.data?.detail || "Training failed");
     } finally {
       setLoading(false);
     }
@@ -114,13 +127,7 @@ export default function TrainModelPage() {
                 <div key={key} className="flex items-center gap-3">
                   <Label className="w-1/3 text-gray-700 dark:text-gray-300">{key}</Label>
                   <Input
-                    value={
-                      val === undefined
-                        ? ""
-                        : typeof val === "object"
-                        ? JSON.stringify(val)
-                        : String(val)
-                    }
+                    value={typeof val === "boolean" ? String(val) : val ?? ""}
                     onChange={(e) => handleParamChange(key, e.target.value)}
                     className="w-2/3"
                   />
