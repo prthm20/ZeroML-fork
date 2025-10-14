@@ -188,7 +188,7 @@ async def train_model(
             X, y, test_size=0.2, random_state=42
         )
 
-        # Debug: shapes
+        # Debug: shapesx
         logger.info(f"Shapes -> X_train: {X_train.shape}, X_test: {X_test.shape}, y_train: {y_train.shape}")
 
         # === Parse hyperparameters safely ===
