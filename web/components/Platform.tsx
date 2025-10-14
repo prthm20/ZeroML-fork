@@ -9,7 +9,7 @@ const Platform = () => {
           <div>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
               See Your ML Pipeline
-              <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent"> Come to Life</span>
+              <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent"> Come to Life</span>
             </h2>
             
             <p className="text-xl text-slate-300 mb-8 leading-relaxed">
@@ -19,7 +19,7 @@ const Platform = () => {
             
             <div className="space-y-6 mb-10">
               <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+                <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-sm">1</div>
                 <div>
                   <h4 className="font-semibold text-white">Data Ingestion</h4>
                   <p className="text-slate-400">Connect and import data from multiple sources</p>
@@ -27,7 +27,7 @@ const Platform = () => {
               </div>
               
               <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
+                <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-sm">2</div>
                 <div>
                   <h4 className="font-semibold text-white">Model Training</h4>
                   <p className="text-slate-400">Automated training with hyperparameter optimization</p>
@@ -35,7 +35,7 @@ const Platform = () => {
               </div>
               
               <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+                <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-sm">3</div>
                 <div>
                   <h4 className="font-semibold text-white">Deployment</h4>
                   <p className="text-slate-400">One-click deployment to production environments</p>
@@ -44,7 +44,7 @@ const Platform = () => {
             </div>
             
             <div className="flex items-center space-x-6">
-              <button className="bg-gradient-to-r from-violet-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-violet-700 hover:to-purple-700 transition-all duration-300 flex items-center space-x-2">
+              <button className="bg-gradient-to-r from-orange-600 to-yellow-500 text-black px-8 py-3 rounded-lg font-semibold hover:from-orange-700 hover:to-yellow-600 transition-all duration-300 flex items-center space-x-2">
                 <span>Try Demo</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
