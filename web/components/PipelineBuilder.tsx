@@ -23,6 +23,7 @@ import { DataSourceUpload } from "./DataSourceUpload";
 import { trainModel } from "./pipeline-utils/TrainModel";
 import { evaluateModel } from "./pipeline-utils/EvaluateModel";
 import CleaningPage from "./CleaningPage";
+import TrainModelPage from "./TrainingPage";
 
 type PreviewRow = Record<string, string | number | boolean | null>;
 interface Node {
@@ -366,6 +367,12 @@ export const PipelineBuilder = () => {
                       <CleaningPage onResult={fileOrUrl => setNodes(prev => prev.map(n => n.id === node.id ? { ...n, output: fileOrUrl } : n))} />
                     </div>
                   )}
+                  {node.type === "model" && (
+                    <div className="mt-4">
+                      <TrainModelPage  />
+                    </div>
+                  )}
+                 
 
                   <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center z-2">
                     <div className="w-5 h-5 bg-[#00f6ff] rounded-full border-2 border-[#23283a] shadow-lg opacity-90 hover:opacity-100 cursor-crosshair hover:scale-125 transition-all duration-150 connection-point"
