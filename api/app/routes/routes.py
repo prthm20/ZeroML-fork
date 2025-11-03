@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 from app.logging.logging_config import setup_logger
 from fastapi import APIRouter, UploadFile, File, HTTPException, Form
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, hf_hub_download
 import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -26,7 +26,7 @@ logger = setup_logger(__name__)
 router = APIRouter()
 load_dotenv()
 
-HF_TOKEN = os.getenv("HF_TOKEN")
+HF_TOKEN = os.getenv("hf_token")
 HF_REPO_ID = "prthm20/ZeoMl"
 
 api = HfApi()
@@ -100,7 +100,7 @@ async def save_cleaned_file(session_id: str = Body(...)):
 
 @router.post("/train-model")
 async def train_model(
-    file: UploadFile = File(...),
+    session_id: str = Form(...),
     target: str = Form(None),
     model_choice: str = Form(None),
     params: str = Form(None)
@@ -108,14 +108,17 @@ async def train_model(
     """
     Robust train_model: strong preprocessing & target encoding + debug logs.
     """
-
+    
     try:
         import json
         from sklearn.preprocessing import LabelEncoder
 
         # === Read file ===
-        content = await file.read()
-        df = pd.read_csv(io.BytesIO(content))
+        repo_id="prthm20/ZeoMl"
+        filename=f"{session_id}_cleaned.csv"
+        print(HF_TOKEN)
+        file_path= hf_hub_download(repo_id=repo_id, filename=filename,repo_type="dataset", token=HF_TOKEN)  
+        df = pd.read_csv(file_path)
         if df.empty:
             raise HTTPException(status_code=400, detail="Uploaded CSV is empty.")
 
@@ -276,7 +279,24 @@ async def train_model(
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         model_path = f"models/{(model_choice or 'model')}_{timestamp}.pkl"
         joblib.dump(model, model_path)
+        
 
+        try:
+           repo_id = "prthm20/ZeoMl"  # your dataset repo
+           hf_filename = f"{session_id}_{model_choice}_{timestamp}.pkl"
+
+    # Upload the model file directly from disk
+           api.upload_file(
+             path_or_fileobj=model_path,          # ✅ path to your .pkl file
+             path_in_repo=hf_filename,            # file name in the repo
+             repo_id=repo_id,
+             repo_type="dataset",                 # ✅ important (same repo type)
+             commit_message=f"Trained model for session {session_id}"
+         )
+
+           hf_status = f"Model uploaded to Hugging Face: {repo_id}/{hf_filename}"
+        except Exception as e:
+                hf_status = f"Error uploading model to Hugging Face: {e}"
         return {
             "status": "success",
             "problem_type": problem_type,
